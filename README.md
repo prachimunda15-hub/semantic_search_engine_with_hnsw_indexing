@@ -2,13 +2,13 @@
 
 A two-stage semantic search engine over ~120k text passages. Passages are embedded with a Sentence Transformer and stored in PostgreSQL (pgvector). An HNSW index retrieves candidates, and a cross-encoder reranks them. A Streamlit app serves it.
 How it works:
-OFFLINE
+#OFFLINE
   chunked passages (CSV) -> embed (MiniLM, 384-d) -> Postgres/pgvector -> HNSW index
-ONLINE
+#ONLINE
   query -> embed -> HNSW top-50 -> cross-encoder rerank -> top-5 -> Streamlit
   
-Stage 1, retrieval. The query is embedded with the same model used for the passages. pgvector returns the 100 nearest passages by cosine distance via the HNSW index. This stage is fast but scores query and passage independently.
-Stage 2, reranking. A cross-encoder reads each (query, passage) pair together and produces a relevance score. It is more accurate but too slow to run over the whole corpus, so it only sees the 100 candidates from Stage 1. The top 10 by reranker score are shown.
+#Stage 1, retrieval. The query is embedded with the same model used for the passages. pgvector returns the 100 nearest passages by cosine distance via the HNSW index. This stage is fast but scores query and passage independently.
+#Stage 2, reranking. A cross-encoder reads each (query, passage) pair together and produces a relevance score. It is more accurate but too slow to run over the whole corpus, so it only sees the 100 candidates from Stage 1. The top 10 by reranker score are shown.
 
 Stack:
 Component	   Choice
